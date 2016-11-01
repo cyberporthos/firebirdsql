@@ -528,7 +528,7 @@ func (p *wireProtocol) opCreate(dbName string, user string, password string, rol
 	var page_size int32
 	page_size = 4096
 
-	encode := bytes.NewBufferString("WIN1252").Bytes()
+	encode := bytes.NewBufferString(_connection_charset_encoding()).Bytes()
 	userBytes := bytes.NewBufferString(strings.ToUpper(user)).Bytes()
 	passwordBytes := bytes.NewBufferString(password).Bytes()
 	roleBytes := []byte(role)
@@ -644,7 +644,7 @@ func (p *wireProtocol) opAccept(user string, password string, authPluginName str
 
 func (p *wireProtocol) opAttach(dbName string, user string, password string, role string) {
 	debugPrint(p, "opAttach")
-	encode := bytes.NewBufferString("WIN1252").Bytes()
+	encode := bytes.NewBufferString(_connection_charset_encoding()).Bytes()
 	userBytes := bytes.NewBufferString(strings.ToUpper(user)).Bytes()
 	passwordBytes := bytes.NewBufferString(password).Bytes()
 	roleBytes := []byte(role)

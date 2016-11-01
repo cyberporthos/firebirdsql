@@ -32,6 +32,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"github.com/cyberporthos/charset"
+	"os"
 )
 
 func str_to_bytes(s string) []byte {
@@ -173,6 +175,24 @@ func _bytesToBlr(v []byte) ([]byte, []byte) {
 	}, nil)
 	blr := []byte{14, byte(nbytes & 255), byte(nbytes >> 8)}
 	return blr, v
+}
+
+func _connection_charset_encoding() string {
+  charset_config := os.Getenv("FB_CLIENT_CHARSET")
+  if charset_config == "" {
+    return "UTF8"
+  } else {
+    return charset_config
+  }
+}
+
+func _convert_charset_if_required(str string) string {
+  charset_config := os.Getenv("FB_CLIENT_CHARSET")
+  if charset_config == "" {
+    return str
+  } else {
+    return charset.ConvertFromCharset(charset_config, str)
+  }
 }
 
 func _convert_date(t time.Time) []byte {

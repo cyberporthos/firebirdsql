@@ -165,13 +165,13 @@ func (x *xSQLVAR) value(raw_value []byte) (v interface{}, err error) {
 		if x.sqlsubtype == 1 { // OCTETS
 			v = raw_value
 		} else {
-			v = bytes.NewBuffer(raw_value).String()
+			v = _convert_charset_if_required(bytes.NewBuffer(raw_value).String())
 		}
 	case SQL_TYPE_VARYING:
 		if x.sqlsubtype == 1 { // OCTETS
 			v = raw_value
 		} else {
-			v = bytes.NewBuffer(raw_value).String()
+			v = _convert_charset_if_required(bytes.NewBuffer(raw_value).String())
 		}
 	case SQL_TYPE_SHORT:
 		i16 := int16(bytes_to_bint32(raw_value))
