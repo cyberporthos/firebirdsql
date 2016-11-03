@@ -173,7 +173,7 @@ func (p *wireProtocol) appendBytes(bs []byte) {
 }
 
 func getSrpClientPublicBytes(clientPublic *big.Int) (bs []byte) {
-	b := bytes.NewBufferString(hex.EncodeToString(bigToBytes(clientPublic))).Bytes()
+	b := str_to_bytes(hex.EncodeToString(bigToBytes(clientPublic)))
 	if len(b) > 254 {
 		bs = bytes.Join([][]byte{
 			[]byte{CNCT_specific_data, byte(255), 0}, b[:254],
@@ -194,11 +194,11 @@ func (p *wireProtocol) uid(user string, password string, authPluginName string, 
 	}
 	hostname, _ := os.Hostname()
 
-	sysUserBytes := bytes.NewBufferString(sysUser).Bytes()
-	hostnameBytes := bytes.NewBufferString(hostname).Bytes()
-	pluginListNameBytes := bytes.NewBufferString(PLUGIN_LIST).Bytes()
-	pluginNameBytes := bytes.NewBufferString(authPluginName).Bytes()
-	userBytes := bytes.NewBufferString(strings.ToUpper(user)).Bytes()
+	sysUserBytes := str_to_bytes(sysUser)
+	hostnameBytes := str_to_bytes(hostname)
+	pluginListNameBytes := str_to_bytes(PLUGIN_LIST)
+	pluginNameBytes := str_to_bytes(authPluginName)
+	userBytes := str_to_bytes(strings.ToUpper(user))
 	var wireCryptByte byte
 	if wireCrypt {
 		wireCryptByte = 1
@@ -210,7 +210,7 @@ func (p *wireProtocol) uid(user string, password string, authPluginName string, 
 	if authPluginName == "Srp" {
 		specific_data = getSrpClientPublicBytes(clientPublic)
 	} else if authPluginName == "Legacy_Auth" {
-		b := bytes.NewBufferString(crypt.Crypt(password, "9z")[2:]).Bytes()
+		b := str_to_bytes(crypt.Crypt(password, "9z")[2:])
 		specific_data = bytes.Join([][]byte{
 			[]byte{CNCT_specific_data, byte(len(b)) + 1, 0}, b,
 		}, nil)
@@ -528,9 +528,9 @@ func (p *wireProtocol) opCreate(dbName string, user string, password string, rol
 	var page_size int32
 	page_size = 4096
 
-	encode := bytes.NewBufferString(_connection_charset_encoding()).Bytes()
-	userBytes := bytes.NewBufferString(strings.ToUpper(user)).Bytes()
-	passwordBytes := bytes.NewBufferString(password).Bytes()
+	encode := str_to_bytes(_connection_charset_encoding())
+	userBytes := str_to_bytes(strings.ToUpper(user))
+	passwordBytes := str_to_bytes(password)
 	roleBytes := []byte(role)
 	dpb := bytes.Join([][]byte{
 		[]byte{1},
@@ -644,9 +644,9 @@ func (p *wireProtocol) opAccept(user string, password string, authPluginName str
 
 func (p *wireProtocol) opAttach(dbName string, user string, password string, role string) {
 	debugPrint(p, "opAttach")
-	encode := bytes.NewBufferString(_connection_charset_encoding()).Bytes()
-	userBytes := bytes.NewBufferString(strings.ToUpper(user)).Bytes()
-	passwordBytes := bytes.NewBufferString(password).Bytes()
+	encode := str_to_bytes(_connection_charset_encoding())
+	userBytes := str_to_bytes(strings.ToUpper(user))
+	passwordBytes := str_to_bytes(password)
 	roleBytes := []byte(role)
 	dbp := bytes.Join([][]byte{
 		[]byte{1},

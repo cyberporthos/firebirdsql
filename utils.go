@@ -133,7 +133,7 @@ func xdrBytes(bs []byte) []byte {
 
 func xdrString(s string) []byte {
 	// XDR encoding string
-	bs := bytes.NewBufferString(s).Bytes()
+	bs := str_to_bytes(s)
 	return xdrBytes(bs)
 }
 
