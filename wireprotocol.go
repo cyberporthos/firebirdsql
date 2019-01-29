@@ -31,7 +31,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"github.com/nyarla/go-crypt"
+	"gitlab.com/nyarla/go-crypt"
 	"math/big"
 	"net"
 	"os"
